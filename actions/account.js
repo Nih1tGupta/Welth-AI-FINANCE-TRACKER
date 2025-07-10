@@ -80,6 +80,8 @@ export async function bulkDeleteTransactions(transactionIds) {
     // Delete transactions and update account balances in a transaction
     await db.$transaction(async (tx) => {
       // Delete transactions
+      // tx is a transactional client – used instead of db to ensure all actions are part of the same atomic transaction
+      // begining a prisma transaction- all done or rollback
       await tx.transaction.deleteMany({
         where: {
           id: { in: transactionIds },

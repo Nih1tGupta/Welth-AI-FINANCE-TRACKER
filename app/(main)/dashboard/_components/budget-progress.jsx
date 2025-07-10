@@ -136,7 +136,7 @@ export function BudgetProgress({ initialBudget, currentExpenses }) {
               }`}
             />
             <p className="text-xs text-muted-foreground text-right">
-              {percentUsed.toFixed(1)}% used
+              {percentUsed.toFixed(0)}% used
             </p>
           </div>
         )}

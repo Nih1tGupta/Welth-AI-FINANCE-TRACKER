@@ -84,14 +84,17 @@ export function CreateAccountDrawer({ children }) {
             <div className="space-y-2">
               <label
                 htmlFor="name"
+                // htmlFor="name": Links the label to the input with id="name", so clicking the label focuses the input.
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 Account Name
               </label>
               <Input
                 id="name"
-                placeholder="e.g., Main Checking"
+                placeholder="Personal Acc."
+                // register("name") connects this input field to React Hook Form under the key "name".
                 {...register("name")}
+                // Let React Hook Form control this input with the name name, and track its value and validation status.”
               />
               {errors.name && (
                 <p className="text-sm text-red-500">{errors.name.message}</p>

@@ -65,6 +65,9 @@ export function AccountChart({ transactions }) {
   }, [transactions, dateRange]);
 
   // Calculate totals for the selected period
+  // we're summing up total income and expense across all dates currently displayed in the chart (based on selected date range).
+
+// 
   const totals = useMemo(() => {
     return filteredData.reduce(
       (acc, day) => ({
@@ -87,6 +90,7 @@ export function AccountChart({ transactions }) {
           </SelectTrigger>
           <SelectContent>
             {Object.entries(DATE_RANGES).map(([key, { label }]) => (
+              // Object.entries() gives pairs like: ["7D", { label: "Last 7 Days", days: 7 }]
               <SelectItem key={key} value={key}>
                 {label}
               </SelectItem>
@@ -125,11 +129,13 @@ export function AccountChart({ transactions }) {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={filteredData}
+              //   { date: "Jul 02", income: 200, expense: 100 }
               margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
               <XAxis
                 dataKey="date"
+                // Maps each bar to the date key
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}

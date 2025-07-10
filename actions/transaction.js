@@ -120,6 +120,7 @@ export async function getTransaction(id) {
 
   return serializeAmount(transaction);
 }
+// pehle fetch karo -->phir update
 
 export async function updateTransaction(id, data) {
   try {
@@ -146,6 +147,17 @@ export async function updateTransaction(id, data) {
     if (!originalTransaction) throw new Error("Transaction not found");
 
     // Calculate balance changes
+
+//     Change Type	Effect on Balance
+// Expense → deleted or changed to income	Balance increases
+// Income → deleted or changed to expense	Balance decreases
+// let  us assume->old
+// type: "INCOME", amount: 500 → oldBalanceChange = +500
+//  noe new one
+// type: "EXPENSE", amount: 300 → newBalanceChange = -300
+// Now:
+// netBalanceChange = -300 - 500 = -800
+//  So the account balance should decrease by ₹800:
     const oldBalanceChange =
       originalTransaction.type === "EXPENSE"
         ? -originalTransaction.amount.toNumber()
@@ -232,9 +244,9 @@ export async function scanReceipt(file) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // Convert File to ArrayBuffer
+    // Convert File to ArrayBuffer- so that we can upload to app
     const arrayBuffer = await file.arrayBuffer();
-    // Convert ArrayBuffer to Base64
+    // Convert ArrayBuffer to Base64-- and then convert to base64
     const base64String = Buffer.from(arrayBuffer).toString("base64");
 
     const prompt = `
@@ -256,7 +268,7 @@ export async function scanReceipt(file) {
 
       If its not a recipt, return an empty object
     `;
-
+    // call this api now
     const result = await model.generateContent([
       {
         inlineData: {

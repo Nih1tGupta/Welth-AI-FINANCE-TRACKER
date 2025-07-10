@@ -23,13 +23,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 const COLORS = [
-  "#FF6B6B",
-  "#4ECDC4",
-  "#45B7D1",
-  "#96CEB4",
-  "#FFEEAD",
-  "#D4A5A5",
-  "#9FA8DA",
+  "red",
+  "blue",
+  "green",
+  "yellow",
+  "orange",
+  "pink",
 ];
 
 export function DashboardOverview({ accounts, transactions }) {
@@ -42,7 +41,7 @@ export function DashboardOverview({ accounts, transactions }) {
     (t) => t.accountId === selectedAccountId
   );
 
-  // Get recent transactions (last 5)
+  // Get recent transactions (last 5 or 10)
   const recentTransactions = accountTransactions
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 5);
@@ -50,6 +49,7 @@ export function DashboardOverview({ accounts, transactions }) {
   // Calculate expense breakdown for current month
   const currentDate = new Date();
   const currentMonthExpenses = accountTransactions.filter((t) => {
+    // jitne trans. aaye-unme se curr month ke filter karlo
     const transactionDate = new Date(t.date);
     return (
       t.type === "EXPENSE" &&
@@ -59,6 +59,7 @@ export function DashboardOverview({ accounts, transactions }) {
   });
 
   // Group expenses by category
+  // ab structure karenge-category ke acc sum karenge
   const expensesByCategory = currentMonthExpenses.reduce((acc, transaction) => {
     const category = transaction.category;
     if (!acc[category]) {
@@ -68,7 +69,7 @@ export function DashboardOverview({ accounts, transactions }) {
     return acc;
   }, {});
 
-  // Format data for pie chart
+  // Formatting our  data for pie chart
   const pieChartData = Object.entries(expensesByCategory).map(
     ([category, amount]) => ({
       name: category,
@@ -175,7 +176,7 @@ export function DashboardOverview({ accounts, transactions }) {
                         fill={COLORS[index % COLORS.length]}
                       />
                     ))}
-                  </Pie>
+                   </Pie>
                   <Tooltip
                     formatter={(value) => `$${value.toFixed(2)}`}
                     contentStyle={{

@@ -66,7 +66,7 @@ export function AddTransactionForm({
             }),
           }
         : {
-            type: "EXPENSE",
+            type: "INCOME",
             amount: "",
             description: "",
             accountId: accounts.find((ac) => ac.isDefault)?.id,
